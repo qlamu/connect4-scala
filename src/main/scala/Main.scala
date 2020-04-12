@@ -16,6 +16,14 @@ object ConnectFour extends App {
     */
   def importPlateau(chaine: String): Board = {
     val lignes = chaine.split("\n").toSeq.filter(_ != "")
+
+    /* If the string is invalid, return an empty board */
+    if(lignes.length > 6 || lignes.filter(_.toList.length > 7).length > 0) {
+      println("Invalid import, default to empty board")
+      val grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
+      return Board(nbLignes, nbColonnes, grid)
+    }
+
     val grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
     var b = Board(6, 7, grid)
 
@@ -32,7 +40,7 @@ object ConnectFour extends App {
     b
   }
 
-  def exportPlateau(plateau: Board): String = plateau.export()
+  def exportPlateau(plateau: Board): String = plateau.export
 
   def joueCoupOrdi(plateau: Board, couleurOrdi: Disc): Board = {
     val computerPlayer = AI(plateau)
@@ -77,7 +85,7 @@ object ConnectFour extends App {
   var b = importPlateau(chaine)
   */
 
-  var grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
+  val grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
   var b = Board(nbLignes, nbColonnes, grid)
 
   /* Play game */

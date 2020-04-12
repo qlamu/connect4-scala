@@ -34,11 +34,10 @@ case class Board(
   }
 
   /**
-    * Check every disc on the grid to check if the game is won
-    *
-    * @return if the game is won
+    * Check every disc to see if the game is won
+    * True if the game is won, false otherwise
     */
-  def isWon(): Boolean = {
+  lazy val isWon: Boolean = {
     0 until nbCols foreach { c =>
       0 until nbRows foreach { r =>
         val d = grid(c)(r)
@@ -57,11 +56,9 @@ case class Board(
   }
 
   /**
-    * Highlight the winning line, used at the end of the game
-    *
-    * @return the board with highlighted winning line
+    * Return a board with an highlighted winning line
     */
-  def getWinnerHighlight(): Board = {
+  lazy val getWinnerHighlight: Board = {
     var newGrid = grid
     val w_disc = DiscUtils.getWinnerDisc(winnerDisc)
     winnerCoord foreach { coord =>
@@ -119,10 +116,8 @@ case class Board(
     * "J" for a yellow disc
     * " " for no disc
     * an empty line for every empty rows in the grid
-    *
-    * @return the grid as a multiline string
     */
-  def export(): String = {
+  lazy val export: String = {
     var res = ""
     0 until nbRows foreach { r =>
       0 until nbCols foreach { c =>
