@@ -1,14 +1,13 @@
 package models
 
-import models.DiscUtils.{HUMAN, COMPUTER}
+import models.DiscUtils.{COMPUTER, HUMAN}
 import types.Types.Disc
-import scala.io.AnsiColor
 
 case class Board(
-    nbRows: Int,
-    nbCols: Int,
-    grid: Vector[Vector[Option[Disc]]]
-) {
+                  nbRows: Int,
+                  nbCols: Int,
+                  grid: Vector[Vector[Option[Disc]]]
+                ) {
   var winnerCoord: Vector[(Int, Int)] = Vector.empty
   var winnerDisc: Disc = ""
 
@@ -44,14 +43,14 @@ case class Board(
       0 until nbRows foreach { r =>
         val d = grid(c)(r)
         if (d.isDefined && (
-              nbAlignedWithDiscVert(r, c, d.get) >= 4 ||
-              nbAlignedWithDiscHorz(r, c, d.get) >= 4 ||
-              nbAlignedWithDiscDiagTL(r, c, d.get) >= 4 ||
-              nbAlignedWithDiscDiagTR(r, c, d.get) >= 4
-            )) {
-              winnerCoord :+= (c, r)
-              winnerDisc = d.get
-            }  
+          nbAlignedWithDiscVert(r, c, d.get) >= 4 ||
+            nbAlignedWithDiscHorz(r, c, d.get) >= 4 ||
+            nbAlignedWithDiscDiagTL(r, c, d.get) >= 4 ||
+            nbAlignedWithDiscDiagTR(r, c, d.get) >= 4
+          )) {
+          winnerCoord :+= (c, r)
+          winnerDisc = d.get
+        }
       }
     }
     winnerCoord.nonEmpty
@@ -77,21 +76,21 @@ case class Board(
     * Recursive function to check the number of discs of a specified color
     * that are aligned on a specified line.
     *
-    * @param r initial row of a disc
-    * @param c initial column of a disc
-    * @param d disc to count
+    * @param r     initial row of a disc
+    * @param c     initial column of a disc
+    * @param d     disc to count
     * @param stepR the displacement on the row axis at every iteration
     * @param stepC the displacement on the column axis at every iteration
     * @return the number of aligned discs with the one initially supplied,
     *         itself included
     */
   private def nbAlignedWithDisc(
-      r: Int,
-      c: Int,
-      d: Disc,
-      stepR: Int,
-      stepC: Int
-  ): Int = {
+                                 r: Int,
+                                 c: Int,
+                                 d: Disc,
+                                 stepR: Int,
+                                 stepC: Int
+                               ): Int = {
     if (r >= nbRows || r < 0 || c >= nbCols || c < 0 || grid(c)(r).isEmpty) 0
     else {
       grid(c)(r) match {
@@ -129,8 +128,8 @@ case class Board(
       0 until nbCols foreach { c =>
         res += (grid(c)(r) match {
           case Some(HUMAN) => "J"
-          case Some(COMPUTER)    => "R"
-          case _            => " "
+          case Some(COMPUTER) => "R"
+          case _ => " "
         })
       }
       res += "\n"

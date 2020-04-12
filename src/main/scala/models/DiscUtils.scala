@@ -1,6 +1,7 @@
 package models
 
 import types.Types.Disc
+
 import scala.io.AnsiColor
 
 object DiscUtils {
@@ -15,7 +16,7 @@ object DiscUtils {
     * @return a colored disc
     */
   def getDiscOfColor(color: String): Disc = s"${color}O${AnsiColor.RESET}"
-  
+
   /**
     * Returns a winner version of the disc for easy differentiation
     *

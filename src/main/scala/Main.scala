@@ -1,8 +1,8 @@
-import models.{Joueur, Board, AI}
 import models.DiscUtils._
+import models.{AI, Board}
 import types.Types.Disc
+
 import scala.io.AnsiColor
-import scala.util.Random
 
 object ConnectFour extends App {
 
@@ -24,7 +24,7 @@ object ConnectFour extends App {
         item._1 match {
           case 'J' => b = b.dropDisc(item._2, HUMAN)
           case 'R' => b = b.dropDisc(item._2, COMPUTER)
-          case _ => 
+          case _ =>
         }
       })
     }
@@ -41,50 +41,60 @@ object ConnectFour extends App {
     plateau.dropDisc(colonne, couleurOrdi)
   }
 
-  def joueCoupHumain(plateau: Board,colonne: Int,couleurHumain: Disc): Board =
+  def joueCoupHumain(plateau: Board, colonne: Int, couleurHumain: Disc): Board =
     b.dropDisc(colonne, couleurHumain)
 
-  def userInput(p: Board, max: Int): Int = {
+  /**
+    * Ask the user for a column and return it
+    *
+    * @param b   the connect4 board
+    * @param max the max value allowed
+    * @return a usable value from the user
+    */
+  def userInput(b: Board, max: Int): Int = {
     println(s"Colonne (0-${max - 1}) : ")
     try {
-    scala.io.StdIn.readInt match {
-      case c if b.canDropDisc(c) => c
-      case _                     => userInput(p, max)
-    }
-   } catch {
+      scala.io.StdIn.readInt match {
+        case c if b.canDropDisc(c) => c
+        case _ => userInput(b, max)
+      }
+    } catch {
       case e: NumberFormatException =>
-        println("Entrée invalide"); userInput(p, max)
+        println("Entrée invalide"); userInput(b, max)
     }
   }
 
   val nbLignes = 6
   val nbColonnes = 7
 
+  /* Import example */
+  /*
   val chaine =
   """
   | JRJ RJ
   |JJJRJRR
   """.stripMargin
   var b = importPlateau(chaine)
+  */
 
-  //var grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
-  //var b = Board(nbLignes, nbColonnes, grid)
+  var grid = Vector.fill[Option[Disc]](nbColonnes, nbLignes)(None)
+  var b = Board(nbLignes, nbColonnes, grid)
 
-
-
+  /* Play game */
   while (!b.isWon && !b.isFull) {
     println(b)
     b = joueCoupHumain(b, userInput(b, nbColonnes), HUMAN)
     if (!b.isWon && !b.isFull) b = joueCoupOrdi(b, COMPUTER)
   }
+  /* Print final board */
   println(b.getWinnerHighlight)
-
   print(getColorFromDisc(b.winnerDisc))
   b.winnerDisc match {
-    case HUMAN    => print("Victoire")
+    case HUMAN => print("Victoire")
     case COMPUTER => print("Défaite")
   }
   println(AnsiColor.RESET)
 
+  /* Print the exported board */
   println(exportPlateau(b))
 }

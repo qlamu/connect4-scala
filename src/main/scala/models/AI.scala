@@ -1,6 +1,6 @@
 package models
-import types.Types.Disc
-import models.DiscUtils.{HUMAN, COMPUTER}
+
+import models.DiscUtils.{COMPUTER, HUMAN}
 
 case class AI(b: Board) {
 
@@ -12,7 +12,6 @@ case class AI(b: Board) {
     * @return the row of the highest disc in the column
     */
   def getRowForLastDiscInCol(b: Board, c: Int): Int = {
-    /* -1 cause we start at 0 and -1 cause we don't count the last added */
     b.nbRows - 1 - b.grid(c).filter(_.isDefined).length + 1
   }
 
@@ -25,11 +24,11 @@ case class AI(b: Board) {
     */
   def getScore(nbAligned: Int): Int = {
     nbAligned match {
-      case 1           => 1
-      case 2           => 5
-      case 3           => 20
+      case 1 => 1
+      case 2 => 5
+      case 3 => 20
       case n if n >= 4 => 100
-      case _           => 0
+      case _ => 0
     }
   }
 
